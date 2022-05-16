@@ -1,18 +1,11 @@
 import pymysql
 import datetime
-
-
-host = "localhost"
-port = 3306
-user = "root"
-password = "12345"  # "C912Pn2445ards!"
-
-DB_NAME = "tax_office"
-
+from conf import config
 
 class DB_Connect:
     def __init__(self):
-        self.connection = pymysql.connect(host=host, port=port, user=user, password=password, database=DB_NAME,
+        self.connection = pymysql.connect(host=config.HOST, port=config.PORT, user=config.USERNAME,
+                                          password=config.PASSWORD, database=config.DATABASE_NAME,
                                           cursorclass=pymysql.cursors.DictCursor)
 
     def information_out(self, table_name):  # Функция извлечения данных

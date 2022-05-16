@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtWidgets
-from db_connection import DB_Connect
+from DataBaseFunctions.db_connection import DB_Connect
 import configparser
 
-CONFIG_PATH = "./conf/config.ini"
+CONFIG_PATH = "./conf/userConfig.ini"
 
 
 class ScrollaAreaFrame(QtWidgets.QFrame):

@@ -2,7 +2,7 @@
 
 from PyQt5 import QtCore, QtWidgets
 from AppWidgets.ShowClients.clientInfoFrame import ClientInfoFrame
-from db_connection import DB_Connect
+from DataBaseFunctions.db_connection import DB_Connect
 
 
 class ShowClientsList(QtWidgets.QWidget):

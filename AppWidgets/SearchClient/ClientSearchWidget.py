@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtWidgets
-from db_connection import DB_Connect
+from DataBaseFunctions.db_connection import DB_Connect
 from AppWidgets.SearchClient.clientActivityFrame import ScrollaAreaFrame
 
 
