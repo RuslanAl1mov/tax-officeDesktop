@@ -287,6 +287,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.NewClientWidget = NewClientAdd(self.main_TabWidget, self.status_line_Label)
         self.add_client_tab = self.NewClientWidget.new_client_form()
         self.main_TabWidget.addTab(self.add_client_tab, "Создать юр.лицо")
+        self.status_line_Label.setText("")
         # Переключение на новое окно
         self.main_TabWidget.setCurrentIndex(self.main_TabWidget.indexOf(self.add_client_tab))
 
@@ -296,6 +297,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.SearchClientWidget = SearchClient(self.main_TabWidget, self.status_line_Label)
         self.add_search_client_tab = self.SearchClientWidget.search_client_form()
         self.main_TabWidget.addTab(self.add_search_client_tab, "Поиск юр.лица")
+        self.status_line_Label.setText("")
         # Переключение на новое окно
         self.main_TabWidget.setCurrentIndex(self.main_TabWidget.indexOf(self.add_search_client_tab))
 
@@ -303,6 +305,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ShowClientsWidget = ShowClientsList(self.main_TabWidget)
         self.add_clients_list_tab = self.ShowClientsWidget.show_clients_list()
         self.main_TabWidget.addTab(self.add_clients_list_tab, "Список юр.лиц")
+        self.status_line_Label.setText("")
         # Переключение на новое окно
         self.main_TabWidget.setCurrentIndex(self.main_TabWidget.indexOf(self.add_clients_list_tab))
 
