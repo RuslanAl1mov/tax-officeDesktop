@@ -82,12 +82,28 @@ class DB_Connect:
             self.connection.close()
         return info
 
+    def client_is_in_db(self, info: list):
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute("SELECT `manager_id` FROM `legal_entities` WHERE `first_name`=%s AND `second_name`=%s"
+                               " AND `father_name`=%s", (info[0], info[1], info[2]))
+                if cursor.fetchone() is not None:
+                    return True
+                else:
+                    return False
+
+        except pymysql.err.OperationalError as e:
+            print("Operation Error  -  " + repr(e))
+            self.connection.close()
+
+
     def search_client(self, info):
         try:
             with self.connection.cursor() as cursor:
                 cursor.execute("SELECT `manager_id` FROM `legal_entities` WHERE `first_name`=%s AND `second_name`=%s"
                                " AND `father_name`=%s", (info[0], info[1], info[2]))
                 manager_id = cursor.fetchone()
+                print(manager_id)
 
                 client_activities_list = []
                 if manager_id is not None:

@@ -3,6 +3,10 @@
 from PyQt5 import QtCore, QtWidgets
 from DataBaseFunctions.db_connection import DB_Connect
 
+"""
+Контроллер окна создания нового Юридического лица.
+"""
+
 
 class NewClientAdd(QtWidgets.QWidget):
     def __init__(self, Main_TabWidget, Status_Label, parent=None):
@@ -32,7 +36,18 @@ class NewClientAdd(QtWidgets.QWidget):
                 list(hash_info.values())[1] + " - " + str(list(hash_info.values())[2]) + "р.")
 
     def new_client_form(self):
+        """
+        Создание основных виджетов окна.
+        :return: Собранную вкладку для создания нового юридического лица
+        """
+
         def activity_combobox_edit(index):
+            """
+            Функция события изменения значения в Combobox, отвечающая за выбор вида деятельности юридического
+            лица.
+            :param index: Индекс выбранной строки в combobox.
+            :return:
+            """
             self.activity_tax_sum_LineEdit.setText(str(self.activities[index][2]))
             self.activity_penalty_sum_LineEdit.setText(str(self.activities[index][3]))
             if self.activity_add_ComboBox.currentText() == "Выберите вид деятельности:":
@@ -41,11 +56,19 @@ class NewClientAdd(QtWidgets.QWidget):
                 self.city_set_ComboBox.setEnabled(True)
 
         def city_combobox_edit(index):
+            """
+            Функция события изменения значения в Combobox, отвечающая за выбор города.
+            :param index: Индекс выбранной строки в combobox.
+            :return:
+            """
             self.activity_tax_sum_LineEdit.setText(
                 str(int(self.activity_tax_sum_LineEdit.text()) - self.cities[index][2]))
-            print(self.cities[index])
 
         def counter_cl_name_letters():
+            """
+            Счетчик букв имени клиента. Активируется при изменении строки с именем клиента.
+            :return:
+            """
             try:
                 if len(self.client_name_add_LineEdit.text()) > 30 or self.client_name_add_LineEdit.text()[-1].isdigit():
                     self.client_name_add_LineEdit.setText(self.client_name_add_LineEdit.text()[:-1])
@@ -54,6 +77,10 @@ class NewClientAdd(QtWidgets.QWidget):
                 pass
 
         def counter_cl_secname_letters():
+            """
+            Счетчик букв фамилии клиента. Активируется при изменении строки с фамилией клиента.
+            :return:
+            """
             try:
                 if len(self.client_secname_add_LineEdit.text()) > 30 or self.client_secname_add_LineEdit.text()[
                     -1].isdigit():
@@ -63,6 +90,10 @@ class NewClientAdd(QtWidgets.QWidget):
                 pass
 
         def counter_cl_fathername_letters():
+            """
+            Счетчик букв отчества клиента. Активируется при изменении строки с отчеством клиента.
+            :return:
+            """
             try:
                 if len(self.client_fathername_add_LineEdit.text()) > 30 or self.client_fathername_add_LineEdit.text()[
                     -1].isdigit():
@@ -72,10 +103,23 @@ class NewClientAdd(QtWidgets.QWidget):
                 pass
 
         def clickDont_save_client_Btn():
+            """
+            Обработка события нажатия на кнопку "Удалить".
+            При нажатии на кнопку "Удалить", текущая вкладка закрывается.
+            :return:
+            """
             self.Main_TabWidget.removeTab(self.Main_TabWidget.indexOf(self.tab))
 
         def clickSaveClient():
+            """
+            Обработка события нажатия на кнопку "Сохранить".
+            При нажатии на кнопку "Сохранить" проверяются поля на правильность написания
+            и наличие "нового" клиента в БД, при наличии клиента в БД, выводится сообщение
+            "Юр.лицо с таким именем уже существует!" в верхней части окна.
+            :return:
+            """
             connection = DB_Connect()
+            self.status_line_Label.setText("")
             line_edit_Error_style_sheet = "color: red"
             line_edit_Default_style_sheet = "color: black"
             client_information = []
@@ -116,6 +160,12 @@ class NewClientAdd(QtWidgets.QWidget):
                 for activity in self.activities:
                     if self.activity_add_ComboBox.currentText() == activity[1]:
                         client_information.append(int(activity[0]))
+
+            if connection.client_is_in_db([self.client_name_add_LineEdit.text(),
+                                           self.client_secname_add_LineEdit.text(),
+                                           self.client_fathername_add_LineEdit.text()]):
+                self.status_line_Label.setText("Юр.лицо с таким именем уже существует!")
+                order_correct = False
 
             for city in self.cities:
                 if city[1] + " - " + str(city[2]) + "р." == self.city_set_ComboBox.currentText():
@@ -183,51 +233,16 @@ class NewClientAdd(QtWidgets.QWidget):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         # tab title
         self.tab_title_Label = QtWidgets.QLabel(self.tab)
-        self.tab_title_Label.setMaximumSize(QtCore.QSize(16777215, 90))
+        self.tab_title_Label.setMaximumSize(QtCore.QSize(16777215, 40))
         self.tab_title_Label.setAlignment(QtCore.Qt.AlignCenter)
         self.tab_title_Label.setObjectName("tab_title_Label")
         self.tab_title_Label.setText("Добавление нового Юр. лица")
         self.tab_title_Label.setStyleSheet("background-color: rgba(169, 169, 169, 60);"
-                                           "border-radius: 30px;"
+                                           "border-radius: 10px;"
                                            "font-family: \"Bahnschrift SemiBold\";"
                                            "font-size: 20px;"
                                            "color: black")
         self.verticalLayout_2.addWidget(self.tab_title_Label)
-        # client name add frame
-        self.name_Frame = QtWidgets.QFrame(self.tab)
-        self.name_Frame.setObjectName("name_Frame")
-        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.name_Frame)
-        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_8.setSpacing(0)
-        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.client_name_add_Frame = QtWidgets.QFrame(self.name_Frame)
-        self.client_name_add_Frame.setMaximumSize(QtCore.QSize(570, 63))
-        self.client_name_add_Frame.setObjectName("client_name_add_Frame")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.client_name_add_Frame)
-        self.gridLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_6.setHorizontalSpacing(3)
-        self.gridLayout_6.setVerticalSpacing(2)
-        self.gridLayout_6.setObjectName("gridLayout_6")
-        self.client_name_add_Label = QtWidgets.QLabel(self.client_name_add_Frame)
-        self.client_name_add_Label.setMinimumSize(QtCore.QSize(0, 20))
-        self.client_name_add_Label.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.client_name_add_Label.setObjectName("client_name_add_Label")
-        self.client_name_add_Label.setText("Имя")
-        self.gridLayout_6.addWidget(self.client_name_add_Label, 0, 0, 1, 1)
-        self.client_name_add_LineEdit = QtWidgets.QLineEdit(self.client_name_add_Frame)
-        self.client_name_add_LineEdit.setMinimumSize(QtCore.QSize(300, 30))
-        self.client_name_add_LineEdit.setMaximumSize(QtCore.QSize(500, 16777215))
-        self.client_name_add_LineEdit.setObjectName("client_name_add_LineEdit")
-        self.client_name_add_LineEdit.textChanged.connect(counter_cl_name_letters)
-        self.gridLayout_6.addWidget(self.client_name_add_LineEdit, 1, 0, 1, 1)
-        self.client_name_letter_num_Label = QtWidgets.QLabel(self.client_name_add_Frame)
-        self.client_name_letter_num_Label.setMinimumSize(QtCore.QSize(40, 30))
-        self.client_name_letter_num_Label.setMaximumSize(QtCore.QSize(40, 30))
-        self.client_name_letter_num_Label.setObjectName("client_name_letter_num_Label")
-        self.client_name_letter_num_Label.setText("0")
-        self.gridLayout_6.addWidget(self.client_name_letter_num_Label, 1, 1, 1, 1)
-        self.horizontalLayout_8.addWidget(self.client_name_add_Frame)
-        self.verticalLayout_2.addWidget(self.name_Frame)
 
         # client second name add
         self.secname_Frame = QtWidgets.QFrame(self.tab)
@@ -265,6 +280,42 @@ class NewClientAdd(QtWidgets.QWidget):
         self.gridLayout_7.addWidget(self.client_secname_letter_num_Label, 1, 1, 1, 1)
         self.horizontalLayout_6.addWidget(self.cleient_secname_add_Frame)
         self.verticalLayout_2.addWidget(self.secname_Frame)
+
+        # client name add frame
+        self.name_Frame = QtWidgets.QFrame(self.tab)
+        self.name_Frame.setObjectName("name_Frame")
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.name_Frame)
+        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_8.setSpacing(0)
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        self.client_name_add_Frame = QtWidgets.QFrame(self.name_Frame)
+        self.client_name_add_Frame.setMaximumSize(QtCore.QSize(570, 63))
+        self.client_name_add_Frame.setObjectName("client_name_add_Frame")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.client_name_add_Frame)
+        self.gridLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_6.setHorizontalSpacing(3)
+        self.gridLayout_6.setVerticalSpacing(2)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.client_name_add_Label = QtWidgets.QLabel(self.client_name_add_Frame)
+        self.client_name_add_Label.setMinimumSize(QtCore.QSize(0, 20))
+        self.client_name_add_Label.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.client_name_add_Label.setObjectName("client_name_add_Label")
+        self.client_name_add_Label.setText("Имя")
+        self.gridLayout_6.addWidget(self.client_name_add_Label, 0, 0, 1, 1)
+        self.client_name_add_LineEdit = QtWidgets.QLineEdit(self.client_name_add_Frame)
+        self.client_name_add_LineEdit.setMinimumSize(QtCore.QSize(300, 30))
+        self.client_name_add_LineEdit.setMaximumSize(QtCore.QSize(500, 16777215))
+        self.client_name_add_LineEdit.setObjectName("client_name_add_LineEdit")
+        self.client_name_add_LineEdit.textChanged.connect(counter_cl_name_letters)
+        self.gridLayout_6.addWidget(self.client_name_add_LineEdit, 1, 0, 1, 1)
+        self.client_name_letter_num_Label = QtWidgets.QLabel(self.client_name_add_Frame)
+        self.client_name_letter_num_Label.setMinimumSize(QtCore.QSize(40, 30))
+        self.client_name_letter_num_Label.setMaximumSize(QtCore.QSize(40, 30))
+        self.client_name_letter_num_Label.setObjectName("client_name_letter_num_Label")
+        self.client_name_letter_num_Label.setText("0")
+        self.gridLayout_6.addWidget(self.client_name_letter_num_Label, 1, 1, 1, 1)
+        self.horizontalLayout_8.addWidget(self.client_name_add_Frame)
+        self.verticalLayout_2.addWidget(self.name_Frame)
 
         # client father name add
         self.fathername_Frame = QtWidgets.QFrame(self.tab)
@@ -399,7 +450,7 @@ class NewClientAdd(QtWidgets.QWidget):
         self.horizontalLayout_9.addWidget(self.activity_add_Frame)
         self.verticalLayout_2.addWidget(self.activity_Frame)
 
-        # save new client
+        # save new client button
         self.save_Frame = QtWidgets.QFrame(self.tab)
         self.save_Frame.setMinimumSize(QtCore.QSize(400, 50))
         self.save_Frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
