@@ -3,11 +3,13 @@
 from PyQt5 import QtCore, QtWidgets
 from DataBaseFunctions.db_connection import DB_Connect
 import configparser
-
-CONFIG_PATH = "./conf/userConfig.ini"
+from conf import config
 
 
 class ScrollaAreaFrame(QtWidgets.QFrame):
+    """
+    Класс создающий форму для вывода вида деятельности Юридического лица из Базы Данных.
+    """
     def __init__(self, scroll_area_Layout, WidgetContent, activity_info, parent=None):
         super(ScrollaAreaFrame, self).__init__(parent)
         self.scroll_area_Layout = scroll_area_Layout
@@ -17,8 +19,24 @@ class ScrollaAreaFrame(QtWidgets.QFrame):
         self.activity_info = activity_info
 
     def new_activity_frame(self):
+        """
+        Функция создающее рамку для вида деятельности, с ее название и кнопкой для удаления этого вида деятельности.
+        :return: Созданное окно
+        """
         def dialog_window(reasons):
+            """
+            Функция обработки нажатия на кнопку удаления вида деятельности у Юридического
+            лица.
+            При нажатии на кнопку, выводится диалоговое окно в котором указывается
+            причина закрытия вида деятельности.
+            :param reasons: Возможные причины закрытия вида деятельности (подкачиваются из БД).
+            :return:
+            """
             def clickRemoveActivity():
+                """
+                Нажатие на кнопку подтверждения удаления вида деятельности.
+                :return:
+                """
                 self.activity_info.append(self.comboBox.currentIndex())
                 self.connection.remove_activity(self.activity_info)  # Удаляем вид деятельности
                 self.scroll_area_Layout.removeWidget(self.activity_info_Frame)
@@ -26,6 +44,10 @@ class ScrollaAreaFrame(QtWidgets.QFrame):
                 self.activity_info_Frame.close()
 
             def clickCloseDialogWindow():
+                """
+                Нажатие на кнопку отмены закрытия вида деятельности.
+                :return:
+                """
                 self.stack1.close()
 
             self.stack1.setMinimumSize(QtCore.QSize(300, 195))
@@ -92,14 +114,29 @@ class ScrollaAreaFrame(QtWidgets.QFrame):
             self.remove_activity_Btn.clicked.connect(clickRemoveActivity)
 
         def clickDeleteActivity():
+            """
+            Обработка нажатия на кнопку для выведения диалогового окна, для удаления вида
+            деятельности у Юридического лица.
+            :return:
+            """
             self.stack1.show()
 
         def load_configs():
-            config = configparser.ConfigParser()
-            config.read(CONFIG_PATH)
-            if config.get("Login", "user") == "0":
+            """
+            Функция подкачивающая из конфигурационного файла, по указанному пути,
+            статус последнего пользователя.
+
+            Пользователь может быть *Администратором или *Юр.лицом.
+
+            В зависимости от статуса пользователя, Пользователь получает/теряет права
+            для удаления вида деятельности у юридического лица.
+            :return:
+            """
+            configuration = configparser.ConfigParser()
+            configuration.read(config.CONFIG_FILE_PATH)
+            if configuration.get("Login", "user") == "0":
                 self.delete_activity_Btn.setEnabled(True)
-            elif config.get("Login", "user") == "1":
+            elif configuration.get("Login", "user") == "1":
                 self.delete_activity_Btn.setEnabled(False)
 
         self.QtStack = QtWidgets.QStackedLayout()

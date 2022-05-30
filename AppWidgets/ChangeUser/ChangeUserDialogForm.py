@@ -2,9 +2,20 @@
 
 from PyQt5 import QtCore, QtWidgets
 
+"""
+Контроллер диалогового окна для смены пользователя
+"""
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+
+        """
+        Функция создающая диалоговое окно.
+        :param MainWindow: Родительское окно.
+        :return:
+        """
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(300, 195)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -76,6 +87,11 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        """
+        Функция определения надписей на виджетах
+        :param MainWindow: Родительское окно.
+        :return:
+        """
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Сменить пользователя:"))

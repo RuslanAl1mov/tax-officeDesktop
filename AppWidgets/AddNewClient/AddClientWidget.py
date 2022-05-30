@@ -82,8 +82,8 @@ class NewClientAdd(QtWidgets.QWidget):
             :return:
             """
             try:
-                if len(self.client_secname_add_LineEdit.text()) > 30 or self.client_secname_add_LineEdit.text()[
-                    -1].isdigit():
+                if len(self.client_secname_add_LineEdit.text()) > 30 or \
+                        self.client_secname_add_LineEdit.text()[-1].isdigit():
                     self.client_secname_add_LineEdit.setText(self.client_secname_add_LineEdit.text()[:-1])
                 self.client_secname_letter_num_Label.setText(str(len(self.client_secname_add_LineEdit.text())))
             except IndexError:
@@ -95,8 +95,8 @@ class NewClientAdd(QtWidgets.QWidget):
             :return:
             """
             try:
-                if len(self.client_fathername_add_LineEdit.text()) > 30 or self.client_fathername_add_LineEdit.text()[
-                    -1].isdigit():
+                if len(self.client_fathername_add_LineEdit.text()) > 30 or \
+                        self.client_fathername_add_LineEdit.text()[-1].isdigit():
                     self.client_fathername_add_LineEdit.setText(self.client_fathername_add_LineEdit.text()[:-1])
                 self.client_fathername_letter_num_Label.setText(str(len(self.client_fathername_add_LineEdit.text())))
             except IndexError:

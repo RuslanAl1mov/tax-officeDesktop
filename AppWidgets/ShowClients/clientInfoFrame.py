@@ -4,12 +4,25 @@ from PyQt5 import QtCore, QtWidgets
 
 
 class ClientInfoFrame(QtWidgets.QFrame):
+    """
+    Класс для создания формы с информацией о Юридическом лице.
+    """
     def __init__(self, WidgetContent, cl_info, parent=None):
+        """
+        Инициализация класса и родительского окна.
+        :param WidgetContent: ContentWidget родителя
+        :param cl_info: Информация о Юридическом лице, которая должна быть выведена в создаваемой форме
+        :param parent: None
+        """
         super(ClientInfoFrame, self).__init__(parent)
         self.scrollAreaWidgetContents = WidgetContent
         self.cl_info = cl_info
 
     def client_inform_frame(self):
+        """
+        Функция создающая форму с информацией о Юридическом лице.
+        :return: Форма с информацией о Юридическом лице.
+        """
         self.activity_info_Frame = QtWidgets.QFrame(self.scrollAreaWidgetContents)
         self.activity_info_Frame.setMinimumSize(QtCore.QSize(0, 0))
         self.activity_info_Frame.setMaximumSize(QtCore.QSize(16777215, 70))

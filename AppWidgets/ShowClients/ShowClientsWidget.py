@@ -6,12 +6,24 @@ from DataBaseFunctions.db_connection import DB_Connect
 
 
 class ShowClientsList(QtWidgets.QWidget):
+    """
+    Класс для создания Вкладки для выводи списка всех существующих Юридических лиц из Базы Данных.
+    """
     def __init__(self, Main_TabWidget, parent=None):
         QtWidgets.QWidget.__init__(self, parent=parent)
         self.Main_TabWidget = Main_TabWidget
 
     def show_clients_list(self):
+        """
+        Функция создающая вкладку для вывода всех существующих Юридических лиц из Базы Данных.
+        :return: Вкладка с функцией вывод всех существующих Юридических лиц из Базы Данных.
+        """
         def load_inform_for_frame():
+            """
+            Вывод из Базы Данных всех Юридических лиц и создания для каждого Юридического
+            лица рамки с информацией об этом Юридическом лице.
+            :return:
+            """
             connection = DB_Connect()
             users_information_hash = connection.information_out("legal_entities")
             users_information = []
@@ -24,6 +36,8 @@ class ShowClientsList(QtWidgets.QWidget):
                 for activity in activities_information:
                     if list(activity.values())[-1] == 0:
                         activities_for_count.append(activity)
+
+                # Создание формы с информацией о Юридическом лице
                 ClientFrame = ClientInfoFrame(self.scrollAreaWidgetContents,
                                               [user[1], user[2], user[3], len(activities_for_count)])
                 self.verticalLayout_3.addWidget(ClientFrame.client_inform_frame())
@@ -33,6 +47,10 @@ class ShowClientsList(QtWidgets.QWidget):
             self.verticalLayout_3.addWidget(self.scroll_area_FrameSpacer)
 
         def clickCloseTab():
+            """
+            Обработка нажатия на кнопку закрытия вкладки для вывода существующих Юридических лиц.
+            :return:
+            """
             self.Main_TabWidget.removeTab(self.Main_TabWidget.indexOf(self.tab))
 
         self.tab = QtWidgets.QWidget()

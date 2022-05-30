@@ -1,5 +1,5 @@
 """
-Main configuration file with final variable
+Main configuration file with constant variables
 """
 
 

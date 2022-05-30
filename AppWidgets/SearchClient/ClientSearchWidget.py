@@ -14,6 +14,9 @@ from AppWidgets.SearchClient.clientActivityFrame import ScrollaAreaFrame
 
 
 class SearchClient(QtWidgets.QWidget):
+    """
+    Класс для создания Вкладки с функцией поиска Юридического лица в Базу Данных.
+    """
     def __init__(self, Main_TabWidget, Status_Label, parent=None):
         QtWidgets.QWidget.__init__(self, parent=parent)
         self.Main_TabWidget = Main_TabWidget
@@ -22,7 +25,15 @@ class SearchClient(QtWidgets.QWidget):
         self.frames = []
 
     def search_client_form(self):
+        """
+        Форма с расположением необходимых виджетов для вкладки поиска.
+        :return: Виджет вкладки поиска Юридического лица.
+        """
         def counter_cl_name_letters():
+            """
+            Функция для подсчета введенных букв в имени клиента.
+            :return:
+            """
             try:
                 if len(self.client_name_add_LineEdit.text()) > 30 or self.client_name_add_LineEdit.text()[-1].isdigit():
                     self.client_name_add_LineEdit.setText(self.client_name_add_LineEdit.text()[:-1])
@@ -31,6 +42,10 @@ class SearchClient(QtWidgets.QWidget):
                 pass
 
         def counter_cl_secname_letters():
+            """
+            Функция для подсчета введенных букв в фамилии клиента.
+            :return:
+            """
             try:
                 if len(self.client_secname_add_LineEdit.text()) > 30 or self.client_secname_add_LineEdit.text()[-1].isdigit():
                     self.client_secname_add_LineEdit.setText(self.client_secname_add_LineEdit.text()[:-1])
@@ -39,6 +54,10 @@ class SearchClient(QtWidgets.QWidget):
                 pass
 
         def counter_cl_fathername_letters():
+            """
+            Функция для подсчета введенных букв в отчестве клиента.
+            :return:
+            """
             try:
                 if len(self.client_fathername_add_LineEdit.text()) > 30 or self.client_fathername_add_LineEdit.text()[-1].isdigit():
                     self.client_fathername_add_LineEdit.setText(self.client_fathername_add_LineEdit.text()[:-1])
@@ -47,6 +66,10 @@ class SearchClient(QtWidgets.QWidget):
                 pass
 
         def ClickSearch():
+            """
+            Обработка нажатия кнопки для старта поиска Юридического лица в Бае Данных.
+            :return:
+            """
             connection = DB_Connect()
             line_edit_Error_style_sheet = "color: red"
             line_edit_Default_style_sheet = "color: black"
@@ -110,6 +133,10 @@ class SearchClient(QtWidgets.QWidget):
 
 
         def clickCloseTab():
+            """
+            Обработка нажатия на кнопку закрытия вкладки поиска Юридических лиц.
+            :return:
+            """
             self.Main_TabWidget.removeTab(self.Main_TabWidget.indexOf(self.tab))
 
 
@@ -166,11 +193,42 @@ class SearchClient(QtWidgets.QWidget):
         self.tab_title_Label.setObjectName("tab_title_Label")
         self.tab_title_Label.setText("Поиск Юр. лица")
         self.verticalLayout_2.addWidget(self.tab_title_Label)
+
         self.user_info_Frame = QtWidgets.QFrame(self.tab)
         self.user_info_Frame.setObjectName("user_info_Frame")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.user_info_Frame)
         self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_5.setObjectName("gridLayout_5")
+
+        self.cleient_secname_add_Frame = QtWidgets.QFrame(self.user_info_Frame)
+        self.cleient_secname_add_Frame.setMinimumSize(QtCore.QSize(0, 0))
+        self.cleient_secname_add_Frame.setMaximumSize(QtCore.QSize(570, 63))
+        self.cleient_secname_add_Frame.setObjectName("cleient_secname_add_Frame")
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.cleient_secname_add_Frame)
+        self.gridLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_7.setHorizontalSpacing(5)
+        self.gridLayout_7.setVerticalSpacing(2)
+        self.gridLayout_7.setObjectName("gridLayout_7")
+        self.client_secname_add_LineEdit = QtWidgets.QLineEdit(self.cleient_secname_add_Frame)
+        self.client_secname_add_LineEdit.setMinimumSize(QtCore.QSize(300, 30))
+        self.client_secname_add_LineEdit.setMaximumSize(QtCore.QSize(500, 16777215))
+        self.client_secname_add_LineEdit.setObjectName("client_secname_add_LineEdit")
+        self.client_secname_add_LineEdit.textChanged.connect(counter_cl_secname_letters)
+        self.gridLayout_7.addWidget(self.client_secname_add_LineEdit, 1, 0, 1, 1)
+        self.client_secname_add_Label = QtWidgets.QLabel(self.cleient_secname_add_Frame)
+        self.client_secname_add_Label.setMinimumSize(QtCore.QSize(0, 20))
+        self.client_secname_add_Label.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.client_secname_add_Label.setObjectName("client_secname_add_Label")
+        self.client_secname_add_Label.setText("Фамилия")
+        self.gridLayout_7.addWidget(self.client_secname_add_Label, 0, 0, 1, 1)
+        self.client_secname_letter_num_Label = QtWidgets.QLabel(self.cleient_secname_add_Frame)
+        self.client_secname_letter_num_Label.setMinimumSize(QtCore.QSize(40, 30))
+        self.client_secname_letter_num_Label.setMaximumSize(QtCore.QSize(40, 30))
+        self.client_secname_letter_num_Label.setObjectName("client_secname_letter_num_Label")
+        self.client_secname_letter_num_Label.setText("0")
+        self.gridLayout_7.addWidget(self.client_secname_letter_num_Label, 1, 1, 1, 1)
+        self.gridLayout_5.addWidget(self.cleient_secname_add_Frame, 0, 0, 1, 1)
+
         self.client_fathername_add_Frame = QtWidgets.QFrame(self.user_info_Frame)
         self.client_fathername_add_Frame.setMinimumSize(QtCore.QSize(0, 0))
         self.client_fathername_add_Frame.setMaximumSize(QtCore.QSize(570, 63))
@@ -206,35 +264,8 @@ class SearchClient(QtWidgets.QWidget):
         self.client_name_letter_num_Label.setObjectName("client_name_letter_num_Label")
         self.client_name_letter_num_Label.setText("0")
         self.gridLayout_6.addWidget(self.client_name_letter_num_Label, 1, 1, 1, 1)
-        self.gridLayout_5.addWidget(self.client_name_add_Frame, 0, 0, 1, 1)
-        self.cleient_secname_add_Frame = QtWidgets.QFrame(self.user_info_Frame)
-        self.cleient_secname_add_Frame.setMinimumSize(QtCore.QSize(0, 0))
-        self.cleient_secname_add_Frame.setMaximumSize(QtCore.QSize(570, 63))
-        self.cleient_secname_add_Frame.setObjectName("cleient_secname_add_Frame")
-        self.gridLayout_7 = QtWidgets.QGridLayout(self.cleient_secname_add_Frame)
-        self.gridLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_7.setHorizontalSpacing(5)
-        self.gridLayout_7.setVerticalSpacing(2)
-        self.gridLayout_7.setObjectName("gridLayout_7")
-        self.client_secname_add_LineEdit = QtWidgets.QLineEdit(self.cleient_secname_add_Frame)
-        self.client_secname_add_LineEdit.setMinimumSize(QtCore.QSize(300, 30))
-        self.client_secname_add_LineEdit.setMaximumSize(QtCore.QSize(500, 16777215))
-        self.client_secname_add_LineEdit.setObjectName("client_secname_add_LineEdit")
-        self.client_secname_add_LineEdit.textChanged.connect(counter_cl_secname_letters)
-        self.gridLayout_7.addWidget(self.client_secname_add_LineEdit, 1, 0, 1, 1)
-        self.client_secname_add_Label = QtWidgets.QLabel(self.cleient_secname_add_Frame)
-        self.client_secname_add_Label.setMinimumSize(QtCore.QSize(0, 20))
-        self.client_secname_add_Label.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.client_secname_add_Label.setObjectName("client_secname_add_Label")
-        self.client_secname_add_Label.setText("Фамилия")
-        self.gridLayout_7.addWidget(self.client_secname_add_Label, 0, 0, 1, 1)
-        self.client_secname_letter_num_Label = QtWidgets.QLabel(self.cleient_secname_add_Frame)
-        self.client_secname_letter_num_Label.setMinimumSize(QtCore.QSize(40, 30))
-        self.client_secname_letter_num_Label.setMaximumSize(QtCore.QSize(40, 30))
-        self.client_secname_letter_num_Label.setObjectName("client_secname_letter_num_Label")
-        self.client_secname_letter_num_Label.setText("0")
-        self.gridLayout_7.addWidget(self.client_secname_letter_num_Label, 1, 1, 1, 1)
-        self.gridLayout_5.addWidget(self.cleient_secname_add_Frame, 1, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.client_name_add_Frame, 1, 0, 1, 1)
+
         self.client_fathername_add_LineEdit = QtWidgets.QLineEdit(self.client_fathername_add_Frame)
         self.client_fathername_add_LineEdit.setMinimumSize(QtCore.QSize(300, 30))
         self.client_fathername_add_LineEdit.setMaximumSize(QtCore.QSize(500, 16777215))
@@ -254,6 +285,7 @@ class SearchClient(QtWidgets.QWidget):
         self.client_fathername_letter_num_Label.setText("0")
         self.gridLayout_8.addWidget(self.client_fathername_letter_num_Label, 1, 1, 1, 1)
         self.gridLayout_5.addWidget(self.client_fathername_add_Frame, 2, 0, 1, 1)
+
         self.search_btn_Frame = QtWidgets.QFrame(self.user_info_Frame)
         self.search_btn_Frame.setMinimumSize(QtCore.QSize(0, 0))
         self.search_btn_Frame.setMaximumSize(QtCore.QSize(570, 63))

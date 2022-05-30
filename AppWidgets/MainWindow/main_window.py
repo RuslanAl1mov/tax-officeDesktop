@@ -11,11 +11,28 @@ import sys
 
 
 class MainWindow(QtWidgets.QMainWindow):
+
+    """
+    Класс главного окна приложения. В нем прописан основной TabWidget, в который,
+    в последующем, будут добавляться определенные Tab окна, выбранные пользователем.
+    """
+
     def __init__(self, parent=None):
+        """
+        Определение родителя. Для основного окна в PyQt5 родителя можно указывать как None.
+        :param parent: None
+        """
         QtWidgets.QMainWindow.__init__(self, parent)
         self.setupUi(self)
 
     def setupUi(self, MainWindow):
+
+        """
+        Инициализация основного окна, виджетов внутри окна и обработки нажатий на
+        определенные элементы окна.
+        :param MainWindow: Родительское окно.
+        :return:
+        """
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowIcon(QtGui.QIcon('./icons/main_icon.png'))
         MainWindow.resize(881, 717)
@@ -114,7 +131,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.function1_Btn = QtWidgets.QPushButton(self.frame)
         self.function1_Btn.setMinimumSize(QtCore.QSize(0, 50))
         self.function1_Btn.setObjectName("function1_Btn")
-        self.function1_Btn.setText("Добавить юр.лицо/ \n Добавить деят-ть")
+        self.function1_Btn.setText("Добавить юр.лицо")
         self.function1_Btn.clicked.connect(self.start_Function1)
         self.verticalLayout.addWidget(self.function1_Btn)
 
@@ -172,16 +189,49 @@ class MainWindow(QtWidgets.QMainWindow):
         MainWindow.setCentralWidget(self.centralwidget)
 
     def load_configs(self, path_to_config_file):
+        """
+        Функция подкачивающая из конфигурационного файла, по указанному пути,
+        статус последнего пользователя.
+
+        Пользователь может быть *Администратором или *Юр.лицом.
+
+        В зависимости от статуса пользователя, функция включает/отключает определенные
+        функции в приложении.
+
+        :param path_to_config_file: Путь к конфигурационному файлу.
+        :return:
+        """
         config = configparser.ConfigParser()
         config.read(path_to_config_file)
+        """
+        Статус пользователя в файле указывается в виде 1/0
+        """
         if config.get("Login", "user") == "0":
             self.function1_Btn.setEnabled(True)
         elif config.get("Login", "user") == "1":
             self.function1_Btn.setEnabled(False)
 
     def clicLoginBtn(self):
+        """
+        Обработка нажатия на кнопку Смены пользователя.
+        Функция выводит диалоговое окно, для выбора статуса пользователя.
+
+        :return:
+        """
         def dialog_window():
+            """
+            Функция инициализирующая диалоговое окно для выбора пользователя.
+
+            В окне имеется 2 кнопки.
+            1) Кнопка отмены выбора.
+            2) Подтверждение выбора определенного пользователя.
+            :return:
+            """
             def clickChangeUser():
+                """
+                Обработка нажатия на кнопку подтверждения выбора пользователя.
+                :return:
+                """
                 configuration = configparser.ConfigParser()
                 configuration.read(config.CONFIG_FILE_PATH)
                 if self.comboBox.currentIndex() == 0 and configuration.get("Login", "user") == "1":
@@ -207,6 +257,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
             def clickCloseDialogWindow():
+                """
+                Обработка нажатия на кнопку отмены выбора пользователя.
+                :return:
+                """
                 self.stack1.close()
 
             self.stack1.setMinimumSize(QtCore.QSize(300, 195))
@@ -282,8 +336,11 @@ class MainWindow(QtWidgets.QMainWindow):
         dialog_window()
         self.QtStack.addWidget(self.stack1)
 
-
     def start_Function1(self):
+        """
+        Обработка нажатия на кнопку для добавления нового Юр.лица.
+        :return:
+        """
         self.NewClientWidget = NewClientAdd(self.main_TabWidget, self.status_line_Label)
         self.add_client_tab = self.NewClientWidget.new_client_form()
         self.main_TabWidget.addTab(self.add_client_tab, "Создать юр.лицо")
@@ -294,6 +351,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.main_TabWidget.setCurrentIndex(0)
 
     def start_Function2(self):
+        """
+        Обработка нажатия на кнопку Поиска нового юридического лица.
+        :return:
+        """
         self.SearchClientWidget = SearchClient(self.main_TabWidget, self.status_line_Label)
         self.add_search_client_tab = self.SearchClientWidget.search_client_form()
         self.main_TabWidget.addTab(self.add_search_client_tab, "Поиск юр.лица")
@@ -302,6 +363,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main_TabWidget.setCurrentIndex(self.main_TabWidget.indexOf(self.add_search_client_tab))
 
     def start_Function3(self):
+        """
+        Обработка нажатия на кнопку для вывода Списка Юр.лиц.
+        :return:
+        """
         self.ShowClientsWidget = ShowClientsList(self.main_TabWidget)
         self.add_clients_list_tab = self.ShowClientsWidget.show_clients_list()
         self.main_TabWidget.addTab(self.add_clients_list_tab, "Список юр.лиц")
@@ -313,6 +378,10 @@ class MainWindow(QtWidgets.QMainWindow):
         pass
 
     def ClickExitBtn(self):
+        """
+        Обработка нажатия на кнопку Выхода из приложения.
+        :return:
+        """
         sys.exit(main_win_app.exec_())
 
 
