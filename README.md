@@ -54,6 +54,11 @@ The latest version is available for
 * OS X 10.10 and 10.11
 * Linux static build for 64 bit
 
+## ER Database diagram
+
+![Preview of Tax-office Desktop](Diagrams/Database%20ER.png)
+
+
 [//]: # (LINKS)
 [license]: LICENSE
 [pyinstaller]: https://pypi.org/project/pyinstaller/
